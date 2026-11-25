@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Atendimento e Serviços | Cartomancia</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display (Itálico caligráfico clássico), Cinzel e Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0b0b0c',
+                        charcoal: '#141416',
+                        graphite: '#1d1d21',
+                        ash: '#2a2a30',
+                        silver: '#d8d6d0',
+                        pearl: '#f2f0eb',
+                        pewter: '#9a9891'
+                    },
+                    fontFamily: {
+                        playfair: ['Playfair Display', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        cormorant: ['Cormorant Garamond', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estética Gótica / Mística Monocromática (Preto, Carvão & Prata/Off-White) */
+        body {
+            background-color: #0b0b0c;
+            color: #d8d6d0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .vintage-bg {
+            background:
+                radial-gradient(circle at 50% 0%, rgba(216, 214, 208, 0.06) 0%, transparent 55%),
+                radial-gradient(circle at 15% 45%, rgba(255, 255, 255, 0.025) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(216, 214, 208, 0.03) 0%, transparent 50%),
+                #0b0b0c;
+        }
+
+        /* Moldura Vintage Fina inspirada na tabela enviada */
+        .vintage-frame {
+            border: 1px solid rgba(216, 214, 208, 0.35);
+            box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.9), inset 0 0 0 3px #141416, inset 0 0 0 4px rgba(216, 214, 208, 0.14);
+        }
+
+        .vintage-card {
+            border: 1px solid rgba(216, 214, 208, 0.22);
+            background-color: #141416;
+            transition: all 0.28s ease;
+        }
+
+        .vintage-card:hover {
+            border-color: rgba(242, 240, 235, 0.55);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.85), 0 0 15px rgba(216, 214, 208, 0.08);
+        }
+
+        /* Ornamento divisor em SVG/CSS */
+        .ornament-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: #d8d6d0;
+            opacity: 0.75;
+        }
+        .ornament-divider::before,
+        .ornament-divider::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            max-width: 110px;
+            background: linear-gradient(90deg, transparent, rgba(216, 214, 208, 0.6), transparent);
+        }
+
+        /* Animação 3D para a Carta do Dia */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.85s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.85rem;
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #161619 0%, #0e0e10 100%);
+            border: 1.5px solid rgba(216, 214, 208, 0.45);
+        }
+
+        .card-front {
+            background: linear-gradient(160deg, #19191d 0%, #0f0f12 100%);
+            border: 1.5px solid #f2f0eb;
+            transform: rotateY(180deg);
+        }
+
+        /* Padrão geométrico monocromático no verso da carta */
+        .card-pattern {
+            background-image: radial-gradient(rgba(216, 214, 208, 0.16) 1px, transparent 1px),
+                              radial-gradient(rgba(216, 214, 208, 0.1) 1px, #121214 1px);
+            background-size: 18px 18px;
+            background-position: 0 0, 9px 9px;
+        }
+
+        @keyframes shufflePulse {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-9px) rotate(-3.5deg); }
+            50% { transform: translateY(4px) rotate(3.5deg); }
+            75% { transform: translateY(-5px) rotate(-1.5deg); }
+        }
+
+        .shuffling {
+            animation: shufflePulse 0.55s ease-in-out infinite;
+        }
+
+        /* Partículas prateadas sutis */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0b0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a30;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d8d6d0;
+        }
+    </style>
+</head>
+<body class="vintage-bg relative min-h-screen selection:bg-silver selection:text-obsidian">
+
+    <!-- Canvas de Poeira Prateada Sutil -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Notificação Toast Flutuante (Substitui alert/confirm) -->
+    <div id="toast-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-charcoal/95 backdrop-blur-md border border-silver/60 text-pearl px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3">
+            <i class="fa-solid fa-moon text-silver"></i>
+            <span id="toast-message" class="text-sm font-medium">Ação concluída!</span>
+        </div>
+    </div>
+
+    <!-- Navegação Superior -->
+    <header class="sticky top-0 z-40 bg-obsidian/90 backdrop-blur-md border-b border-silver/15">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <a href="#inicio" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-full bg-graphite border border-silver/45 flex items-center justify-center text-pearl group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-eye text-sm"></i>
+                </div>
+                <div>
+                    <span id="nav-brand-name" class="font-playfair italic font-semibold text-lg sm:text-xl tracking-wide text-pearl block leading-none">
+                        Oráculo & Cartomancia
+                    </span>
+                    <span class="text-[10px] uppercase tracking-[0.22em] text-pewter">Baralho Cigano & Tarot</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-silver/80">
+                <a href="#tabela-servicos" class="hover:text-pearl transition-colors">Tabela & Valores</a>
+                <a href="#carta-do-dia" class="hover:text-pearl transition-colors">Carta do Dia</a>
+                <a href="#aviso-etico" class="hover:text-pearl transition-colors">Aviso Importante</a>
+            </nav>
+
+            <a href="#tabela-servicos" class="px-4 py-2 rounded-lg bg-graphite hover:bg-ash border border-silver/50 text-pearl text-xs sm:text-sm font-medium transition-all">
+                Montar Consulta
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-10">
+
+        <!-- 1. CABEÇALHO / HERO INSPIRADO NA ARTE VINTAGE DA TABELA -->
+        <section id="inicio" class="pt-12 pb-14 sm:pt-16 sm:pb-20 px-4 sm:px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <!-- Emblema SVG Monocromático (Terceiro Olho & Lua Crescente) -->
+                <div class="mb-5 flex justify-center">
+                    <svg viewBox="0 0 120 70" class="w-24 h-14 text-silver/90" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <!-- Lua Crescente -->
+                        <path d="M42 46 C46 55, 74 55, 78 46 C71 51, 49 51, 42 46 Z" fill="currentColor" fill-opacity="0.25"/>
+                        <!-- Terceiro Olho Vertical -->
+                        <path d="M60 12 C50 22, 50 36, 60 44 C70 36, 70 22, 60 12 Z"/>
+                        <circle cx="60" cy="28" r="4.5" fill="currentColor"/>
+                        <!-- Raios sutis -->
+                        <line x1="60" y1="4" x2="60" y2="8"/>
+                        <line x1="44" y1="12" x2="47" y2="15"/>
+                        <line x1="76" y1="12" x2="73" y2="15"/>
+                    </svg>
+                </div>
+
+                <span class="text-xs uppercase tracking-[0.28em] text-pewter block mb-2">Leituras de Baralho Cigano & Tarot</span>
+
+                <h1 class="font-playfair italic text-4xl sm:text-5xl md:text-6xl font-semibold text-pearl tracking-wide leading-tight mb-4">
+                    Tabela de Atendimento e Serviços
+                </h1>
+
+                <div class="ornament-divider max-w-md mx-auto my-5">
+                    <span class="text-xs tracking-widest">✦ ❖ ✦</span>
+                </div>
+
+                <p class="font-cormorant italic text-xl sm:text-2xl text-silver/90 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    Consultas objetivas, aprofundamentos e métodos tradicionais com clareza, sigilo e respeito à sua jornada.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                    <a href="#tabela-servicos" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-pearl text-obsidian hover:bg-silver font-semibold text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-scroll"></i>
+                        <span>Escolher Tiragens & Calcular Valor</span>
+                    </a>
+                    <a href="#carta-do-dia" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-charcoal border border-silver/45 text-pearl hover:border-pearl text-sm font-medium tracking-wide transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-moon text-silver"></i>
+                        <span>Tirar Carta do Dia</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. CATÁLOGO OFICIAL DA TABELA + SIMULADOR AUTOMÁTICO DE CONSULTA -->
+        <section id="tabela-servicos" class="py-12 sm:py-16 px-4 sm:px-6">
+            <div class="max-w-6xl mx-auto">
+
+                <!-- Barra de Filtros por Categoria -->
+                <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+                    <button onclick="filterCategory('todos')" data-cat="todos" class="cat-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-pearl bg-pearl text-obsidian transition-all">
+                        Todos os Serviços
+                    </button>
+                    <button onclick="filterCategory('objetivas')" data-cat="objetivas" class="cat-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-silver/30 bg-charcoal text-silver hover:border-pearl transition-all">
+                        Perguntas Objetivas
+                    </button>
+                    <button onclick="filterCategory('detalhadas')" data-cat="detalhadas" class="cat-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-silver/30 bg-charcoal text-silver hover:border-pearl transition-all">
+                        Perguntas Detalhadas (6 Cartas)
+                    </button>
+                    <button onclick="filterCategory('mesa-real')" data-cat="mesa-real" class="cat-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-silver/30 bg-charcoal text-silver hover:border-pearl transition-all">
+                        Mesa Real / 9 Cartas
+                    </button>
+                    <button onclick="filterCategory('especiais')" data-cat="especiais" class="cat-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-silver/30 bg-charcoal text-silver hover:border-pearl transition-all">
+                        Métodos Especiais (R$ 18)
+                    </button>
+                    <button onclick="filterCategory('personalizadas')" data-cat="personalizadas" class="cat-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-medium border border-silver/30 bg-charcoal text-silver hover:border-pearl transition-all">
+                        Personalizadas
+                    </button>
+                </div>
+
+                <!-- Grid Principal: Tabela Oficial (Esquerda) + Simulador de Pedido (Direita) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                    <!-- COLUNA ESQUERDA: TABELA DE ATENDIMENTO E SERVIÇOS (7 cols) -->
+                    <div class="lg:col-span-7 vintage-frame bg-charcoal rounded-2xl p-5 sm:p-8">
+                        <div class="text-center mb-7">
+                            <h2 class="font-playfair italic text-2xl sm:text-3xl font-semibold text-pearl">
+                                Tabela de Atendimento e Serviços
+                            </h2>
+                            <div class="ornament-divider max-w-xs mx-auto mt-2">
+                                <span class="text-[10px]">❖</span>
+                            </div>
+                        </div>
+
+                        <!-- Container onde as categorias oficiais são renderizadas -->
+                        <div id="catalog-groups-container" class="space-y-7">
+                            <!-- Renderizado via JS com os 100% dos itens exatos da imagem -->
+                        </div>
+
+                        <!-- AVISO IMPORTANTE INTEGRADO NA BASE DA TABELA (Fiel à imagem) -->
+                        <div id="aviso-etico" class="mt-8 pt-6 border-t border-silver/30">
+                            <div class="p-4 sm:p-5 rounded-xl bg-obsidian/90 border border-silver/40 flex items-start gap-3.5">
+                                <div class="w-9 h-9 rounded-lg bg-graphite border border-silver/35 flex items-center justify-center text-pearl shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-cinzel text-sm sm:text-base font-bold tracking-wider text-pearl uppercase">
+                                        AVISO IMPORTANTE:
+                                    </h3>
+                                    <p class="font-cormorant italic text-lg sm:text-xl text-silver mt-1 leading-snug">
+                                        Não realizo tiragens sobre saúde, questões jurídicas ou pessoas falecidas.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLUNA DIREITA: SIMULADOR DE PEDIDO / MONTADOR DE CONSULTA (5 cols) -->
+                    <div class="lg:col-span-5 lg:sticky lg:top-24">
+                        <div class="vintage-frame bg-charcoal rounded-2xl p-6 sm:p-7">
+                            <div class="flex items-center justify-between pb-4 mb-5 border-b border-silver/20">
+                                <div class="flex items-center gap-2.5">
+                                    <i class="fa-solid fa-feather-pointed text-silver"></i>
+                                    <h3 class="font-playfair italic text-xl sm:text-2xl font-semibold text-pearl">Montar Consulta</h3>
+                                </div>
+                                <button onclick="clearCart()" class="text-xs text-pewter hover:text-pearl underline underline-offset-4 transition-colors">
+                                    Limpar seleção
+                                </button>
+                            </div>
+
+                            <!-- Itens Selecionados -->
+                            <div id="cart-items-container" class="space-y-2.5 mb-5 min-h-[76px]">
+                                <p class="text-sm text-pewter italic py-4 text-center">
+                                    Clique em "+ Adicionar" nos serviços ao lado para montar seu pedido.
+                                </p>
+                            </div>
+
+                            <!-- Campos Opcionais do Consulente -->
+                            <div class="space-y-3 mb-5">
+                                <div>
+                                    <label for="client-name" class="block text-[11px] uppercase tracking-wider text-pewter mb-1">Seu Nome ou Apelido (opcional)</label>
+                                    <input type="text" id="client-name" oninput="updateOrderSummary()" placeholder="Ex: Clara" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-silver/25 text-sm text-pearl placeholder-pewter/40 focus:outline-none focus:border-pearl">
+                                </div>
+                                <div>
+                                    <label for="client-questions" class="block text-[11px] uppercase tracking-wider text-pewter mb-1">Suas perguntas / tema ou método desejado</label>
+                                    <textarea id="client-questions" rows="2" oninput="updateOrderSummary()" placeholder="Ex: Gostaria de fazer 1 pergunta detalhada sobre minha vida profissional..." class="w-full px-3.5 py-2 rounded-xl bg-obsidian border border-silver/25 text-sm text-pearl placeholder-pewter/40 focus:outline-none focus:border-pearl resize-none"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Total Automático -->
+                            <div class="p-4 rounded-xl bg-obsidian border border-silver/30 mb-5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-silver">Total Estimado:</span>
+                                    <span id="cart-total-display" class="font-cinzel text-2xl font-bold text-pearl">R$ 0,00</span>
+                                </div>
+                                <p id="custom-quote-note" class="hidden text-[11px] text-pewter italic mt-1.5">
+                                    * Inclui item personalizado (a partir de R$ 18,00 — valor final ajustado conforme complexidade).
+                                </p>
+                            </div>
+
+                            <!-- Prévia da Mensagem Pronta -->
+                            <div class="mb-5">
+                                <span class="block text-[11px] uppercase tracking-wider text-pewter mb-1.5">Mensagem gerada automaticamente:</span>
+                                <div id="message-preview-box" class="p-3.5 rounded-xl bg-obsidian/95 border border-silver/20 text-xs text-silver whitespace-pre-line leading-relaxed max-h-36 overflow-y-auto">
+                                    Olá! Gostaria de agendar um atendimento.
+                                </div>
+                            </div>
+
+                            <!-- Botões de Envio: WhatsApp & Discord -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <button onclick="sendOrderWhatsApp()" class="w-full py-3 px-4 rounded-xl bg-pearl hover:bg-silver text-obsidian text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-md">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Enviar WhatsApp</span>
+                                </button>
+                                <button onclick="copyOrderDiscord()" class="w-full py-3 px-4 rounded-xl bg-graphite hover:bg-ash border border-silver/45 text-pearl text-sm font-medium flex items-center justify-center gap-2 transition-all">
+                                    <i class="fa-brands fa-discord text-lg"></i>
+                                    <span>Copiar p/ Discord</span>
+                                </button>
+                            </div>
+
+                            <div class="text-[11px] text-center text-pewter mt-3 space-y-1">
+                                <p>
+                                    Discord: <span id="badge-discord-handle" class="text-pearl font-medium">bsjosmelo</span>
+                                    <span class="mx-1.5 text-silver/40">•</span>
+                                    Instagram: <a id="badge-instagram-link" href="https://instagram.com/obrilhodeoxum" target="_blank" rel="noopener noreferrer" class="text-pearl font-medium hover:underline">@<span id="badge-instagram-handle">obrilhodeoxum</span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SEÇÃO INTERATIVA: CARTA DO DIA EM 3D (MONOCROMÁTICA PRATA & CARVÃO) -->
+        <section id="carta-do-dia" class="py-16 sm:py-24 px-4 sm:px-6 bg-charcoal/60 border-t border-silver/15">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-xs uppercase tracking-[0.25em] text-pewter font-medium">Oráculo Diário</span>
+                    <h2 class="font-playfair italic text-3xl sm:text-4xl font-semibold text-pearl mt-1.5 mb-3">
+                        Tire sua Carta do Dia
+                    </h2>
+                    <p class="text-sm sm:text-base text-silver/80">
+                        Concentre-se na sua energia atual e toque em uma das três lâminas abaixo para revelar uma mensagem reflexiva do Baralho Cigano ou do Tarot.
+                    </p>
+                </div>
+
+                <!-- Botão Embaralhar -->
+                <div class="flex justify-center mb-10">
+                    <button onclick="shuffleDailyDeck()" class="px-5 py-2.5 rounded-xl bg-graphite hover:bg-ash border border-silver/40 text-pearl text-sm font-medium flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-shuffle text-silver"></i>
+                        <span>Embaralhar Lâminas</span>
+                    </button>
+                </div>
+
+                <!-- 3 Cartas Viradas para Baixo -->
+                <div id="daily-cards-row" class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto mb-10">
+                    <!-- Renderizado via JS -->
+                </div>
+
+                <!-- Caixa de Revelação da Carta -->
+                <div id="daily-card-result" class="hidden max-w-2xl mx-auto vintage-frame bg-obsidian/95 rounded-2xl p-6 sm:p-8 text-center">
+                    <span id="result-deck-label" class="inline-block px-3 py-1 rounded-full bg-graphite border border-silver/30 text-silver text-[11px] uppercase tracking-widest mb-3">
+                        Baralho Cigano
+                    </span>
+                    <h3 id="result-card-name" class="font-playfair italic text-2xl sm:text-3xl font-semibold text-pearl mb-1">
+                        A Estrela
+                    </h3>
+                    <p id="result-card-keywords" class="text-xs uppercase tracking-[0.2em] text-pewter mb-4">
+                        Esperança • Direção • Clareza
+                    </p>
+                    <p id="result-card-message" class="font-cormorant italic text-xl sm:text-2xl text-silver leading-relaxed mb-6">
+                        "Mensagem da carta..."
+                    </p>
+                    <div class="pt-4 border-t border-silver/15">
+                        <a href="#tabela-servicos" class="text-xs font-medium text-pearl hover:text-silver underline underline-offset-4">
+                            Deseja aprofundar sua questão? Escolha uma tiragem na tabela acima ↑
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ DISCRETO COM BOTÃO DE CONFIGURAÇÃO DE CONTATO -->
+    <footer class="relative z-10 bg-obsidian border-t border-silver/15 py-10 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-center sm:text-left">
+                <p id="footer-brand-name" class="font-playfair italic text-lg text-pearl">Oráculo & Cartomancia</p>
+                <p class="text-xs text-pewter mt-0.5">Tabela de Atendimento e Serviços • Sigilo e Ética em cada leitura.</p>
+            </div>
+
+            <button onclick="toggleSettingsModal()" class="px-4 py-2 rounded-xl bg-charcoal hover:bg-graphite border border-silver/30 hover:border-pearl text-xs text-silver hover:text-pearl flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Configurar Contato / Nome</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- MODAL DE CONFIGURAÇÃO DE CONTATO / NOME ARTÍSTICO -->
+    <div id="settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="vintage-frame bg-charcoal rounded-2xl w-full max-w-md p-6 sm:p-7 shadow-2xl">
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-silver/20">
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-pewter">Ajustes Rápidos</span>
+                    <h3 class="font-playfair italic text-xl font-semibold text-pearl">Configurar Contato / Nome</h3>
+                </div>
+                <button onclick="toggleSettingsModal()" class="w-8 h-8 rounded-lg bg-obsidian border border-silver/25 text-silver hover:text-pearl flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs text-pewter mb-1">Seu Nome Artístico / Título da Página</label>
+                    <input type="text" id="input-brand-name" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-silver/30 text-pearl focus:border-pearl focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-pewter mb-1">WhatsApp (apenas números com DDI + DDD)</label>
+                    <input type="text" id="input-whatsapp" placeholder="5511999999999" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-silver/30 text-pearl focus:border-pearl focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-pewter mb-1">@ do Discord</label>
+                    <input type="text" id="input-discord" placeholder="bsjosmelo" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-silver/30 text-pearl focus:border-pearl focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-pewter mb-1">@ do Instagram</label>
+                    <input type="text" id="input-instagram" placeholder="obrilhodeoxum" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-silver/30 text-pearl focus:border-pearl focus:outline-none">
+                </div>
+            </div>
+
+            <div class="mt-7 pt-4 border-t border-silver/20 flex items-center justify-between gap-3">
+                <button onclick="resetSettings()" class="text-xs text-pewter hover:text-pearl">
+                    Restaurar padrão
+                </button>
+                <button onclick="saveSettings()" class="px-5 py-2.5 rounded-xl bg-pearl hover:bg-silver text-obsidian font-semibold text-sm transition-all">
+                    Salvar Dados
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 1. CATÁLOGO OFICIAL EXATO CONFORME A TABELA DE ATENDIMENTO E SERVIÇOS
+        // =========================================================================
+        const OFFICIAL_CATALOG = [
+            {
+                groupId: 'objetivas',
+                title: 'Perguntas Objetivas',
+                subtitle: '(Sim ou Não)',
+                items: [
+                    { id: 'obj-1', name: '1 pergunta', categoryLabel: 'Perguntas Objetivas (Sim ou Não)', price: 4.00 },
+                    { id: 'obj-3', name: '3 perguntas', categoryLabel: 'Perguntas Objetivas (Sim ou Não)', price: 10.00 }
+                ]
+            },
+            {
+                groupId: 'detalhadas',
+                title: 'Perguntas Detalhadas',
+                subtitle: '(6 Cartas - Aprofundamento)',
+                items: [
+                    { id: 'det-1', name: '1 pergunta', categoryLabel: 'Perguntas Detalhadas (6 Cartas)', price: 7.00 },
+                    { id: 'det-3', name: '3 perguntas', categoryLabel: 'Perguntas Detalhadas (6 Cartas)', price: 18.00 }
+                ]
+            },
+            {
+                groupId: 'mesa-real',
+                title: 'Mesa Real / Tiragem das 9 Cartas',
+                subtitle: '',
+                items: [
+                    { id: 'mesa-1', name: '1 tema/pergunta', categoryLabel: 'Mesa Real / Tiragem das 9 Cartas', price: 10.00 },
+                    { id: 'mesa-3', name: '3 temas/perguntas', categoryLabel: 'Mesa Real / Tiragem das 9 Cartas', price: 25.00 }
+                ]
+            },
+            {
+                groupId: 'especiais',
+                title: 'Métodos Especiais',
+                subtitle: '(Preço Fixo: R$ 18,00)',
+                boxed: true,
+                items: [
+                    { id: 'esp-afrodite', name: 'Templo de Afrodite', categoryLabel: 'Métodos Especiais', price: 18.00 },
+                    { id: 'esp-taca', name: 'Taça do Amor', categoryLabel: 'Métodos Especiais', price: 18.00 },
+                    { id: 'esp-diabo', name: 'Templo do Diabo', categoryLabel: 'Métodos Especiais', price: 18.00 },
+                    { id: 'esp-conselho', name: 'Conselho das Cartas / Visão Geral', categoryLabel: 'Métodos Especiais', price: 18.00 }
+                ]
+            },
+            {
+                groupId: 'personalizadas',
+                title: 'Outros Métodos & Tiragens Personalizadas',
+                subtitle: '',
+                items: [
+                    {
+                        id: 'pers-custom',
+                        name: 'A partir de R$ 18,00',
+                        note: '(valor ajustado conforme a complexidade da tiragem)',
+                        categoryLabel: 'Outros Métodos & Tiragens Personalizadas',
+                        price: 18.00,
+                        isStartingPrice: true
+                    }
+                ]
+            }
+        ];
+
+        // =========================================================================
+        // 2. BARALHO DA CARTA DO DIA (ILUSTRAÇÕES MONOCROMÁTICAS PRATA)
+        // =========================================================================
+        const DAILY_CARDS = [
+            {
+                deck: 'Baralho Cigano • Carta 16',
+                name: 'A Estrela',
+                keywords: 'Direção • Esperança • Clareza Espiritual',
+                message: 'A luz da intuição dissipa dúvidas antigas. Confie na sua percepção: os próximos passos se revelam com nitidez quando você silencia o ruído externo.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polygon points="32,6 38,24 58,24 42,36 48,54 32,43 16,54 22,36 6,24 26,24" stroke-linejoin="round"/>
+                    <circle cx="32" cy="31" r="3.5" fill="currentColor"/>
+                </svg>`
+            },
+            {
+                deck: 'Baralho Cigano • Carta 33',
+                name: 'A Chave',
+                keywords: 'Solução • Abertura • Decisão Firme',
+                message: 'As respostas e soluções que você procura já estão em suas mãos. Não hesite em abrir uma nova porta ou encerrar definitivamente o que já cumpriu seu ciclo.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="32" cy="18" r="10"/>
+                    <circle cx="32" cy="18" r="4"/>
+                    <line x1="32" y1="28" x2="32" y2="56"/>
+                    <path d="M32 44H42M32 51H40"/>
+                </svg>`
+            },
+            {
+                deck: 'Tarot • Arcano XVIII',
+                name: 'A Lua',
+                keywords: 'Intuição • Mistério • Escuta Interior',
+                message: 'Nem tudo se revela à primeira vista. Observe as entrelinhas, os sonhos e os sinais sutis antes de firmar qualquer compromisso hoje.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M40 12A20 20 0 1 0 52 44A16 16 0 1 1 40 12Z" stroke-linejoin="round"/>
+                    <circle cx="45" cy="20" r="1.5" fill="currentColor"/>
+                    <circle cx="51" cy="28" r="1" fill="currentColor"/>
+                </svg>`
+            },
+            {
+                deck: 'Tarot • Arcano II',
+                name: 'A Sacerdotisa',
+                keywords: 'Sabedoria • Discrição • Discernimento',
+                message: 'Guarde seus planos em silêncio e observe mais do que fala. A verdadeira força hoje reside na serenidade e na escuta da sua voz interior.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M16 52V22C16 14 23 10 32 10C41 10 48 14 48 22V52"/>
+                    <circle cx="32" cy="26" r="6"/>
+                    <path d="M22 44H42"/>
+                </svg>`
+            },
+            {
+                deck: 'Baralho Cigano • Carta 31',
+                name: 'O Sol',
+                keywords: 'Verdade • Clareza • Realização',
+                message: 'Uma energia de lucidez ilumina situações antes ocultas. É um momento propício para agir com autenticidade e colher frutos do seu empenho.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="32" cy="32" r="12"/>
+                    <path d="M32 8V14M32 50V56M8 32H14M50 32H56M15 15L19 19M45 45L49 49M49 15L45 19M19 45L15 49"/>
+                </svg>`
+            },
+            {
+                deck: 'Baralho Cigano • Carta 24',
+                name: 'O Coração',
+                keywords: 'Sentimento • Sinceridade • Entrega',
+                message: 'Permita-se olhar com honestidade para aquilo que realmente importa para você. Escolhas alinhadas aos seus valores trazem paz.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M32 54C32 54 10 39 10 23C10 15.5 16 10 23 10C27.5 10 30.5 12.5 32 15.5C33.5 12.5 36.5 10 41 10C48 10 54 15.5 54 23C54 39 32 54 32 54Z" stroke-linejoin="round"/>
+                </svg>`
+            },
+            {
+                deck: 'Tarot • Arcano X',
+                name: 'A Roda da Fortuna',
+                keywords: 'Movimento • Mudança de Ciclo • Destino',
+                message: 'O que parecia imóvel começa a girar. Mantenha-se flexível diante das reviravoltas do dia, pois elas abrem espaço para o novo.',
+                svg: `<svg viewBox="0 0 64 64" class="w-16 h-16 text-pearl mx-auto" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="32" cy="32" r="20"/>
+                    <circle cx="32" cy="32" r="7"/>
+                    <path d="M32 12V25M32 39V52M12 32H25M39 32H52M18 18L27 27M37 37L46 46M46 18L37 27M27 37L18 46"/>
+                </svg>`
+            }
+        ];
+
+        // =========================================================================
+        // 3. ESTADO DA APLICAÇÃO & CONFIGURAÇÕES DO CARTOMANTE
+        // =========================================================================
+        const DEFAULT_PROFILE = {
+            brandName: 'Oráculo & Cartomancia',
+            whatsapp: '5511999999999',
+            discord: 'bsjosmelo',
+            instagram: 'obrilhodeoxum'
+        };
+
+        let profile = JSON.parse(localStorage.getItem('cartomancia_gothic_profile')) || { ...DEFAULT_PROFILE };
+        profile.discord = profile.discord || DEFAULT_PROFILE.discord;
+        profile.instagram = profile.instagram || DEFAULT_PROFILE.instagram;
+        let activeFilter = 'todos';
+        // Carrinho guarda objetos { id, quantity } para permitir escolher múltiplos itens ou quantidades
+        let cart = [];
+        let currentHand = [];
+        let cardRevealed = false;
+
+        // =========================================================================
+        // 4. INICIALIZAÇÃO
+        // =========================================================================
+        window.onload = function() {
+            initSilverParticles();
+            applyProfileUI();
+            renderCatalog();
+            updateOrderSummary();
+            shuffleDailyDeck(false);
+        };
+
+        function applyProfileUI() {
+            document.title = `Tabela de Atendimento e Serviços | ${profile.brandName}`;
+            document.getElementById('nav-brand-name').textContent = profile.brandName;
+            document.getElementById('footer-brand-name').textContent = profile.brandName;
+            document.getElementById('badge-discord-handle').textContent = profile.discord;
+            const cleanIg = profile.instagram.replace(/^@/, '');
+            document.getElementById('badge-instagram-handle').textContent = cleanIg;
+            document.getElementById('badge-instagram-link').href = `https://instagram.com/${encodeURIComponent(cleanIg)}`;
+        }
+
+        // =========================================================================
+        // 5. RENDERIZAÇÃO DO CATÁLOGO OFICIAL & FILTROS
+        // =========================================================================
+        function filterCategory(cat) {
+            activeFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.classList.add('border-pearl', 'bg-pearl', 'text-obsidian');
+                    btn.classList.remove('border-silver/30', 'bg-charcoal', 'text-silver');
+                } else {
+                    btn.classList.remove('border-pearl', 'bg-pearl', 'text-obsidian');
+                    btn.classList.add('border-silver/30', 'bg-charcoal', 'text-silver');
+                }
+            });
+            renderCatalog();
+        }
+
+        function formatBRL(val) {
+            return `R$ ${val.toFixed(2).replace('.', ',')}`;
+        }
+
+        function renderCatalog() {
+            const container = document.getElementById('catalog-groups-container');
+            container.innerHTML = '';
+
+            const groups = activeFilter === 'todos'
+                ? OFFICIAL_CATALOG
+                : OFFICIAL_CATALOG.filter(g => g.groupId === activeFilter);
+
+            groups.forEach(group => {
+                const groupWrapper = document.createElement('div');
+                groupWrapper.className = group.boxed
+                    ? 'p-4 sm:p-5 rounded-xl border border-silver/45 bg-obsidian/55'
+                    : '';
+
+                const headerHTML = `
+                    <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                        <h3 class="font-playfair italic text-xl sm:text-2xl font-semibold text-pearl">
+                            ${group.title}
+                        </h3>
+                        ${group.subtitle ? `<span class="font-cormorant italic text-sm sm:text-base text-silver/85">${group.subtitle}</span>` : ''}
+                    </div>
+                `;
+
+                const itemsHTML = group.items.map(item => {
+                    const inCart = cart.find(c => c.id === item.id);
+                    const qty = inCart ? inCart.quantity : 0;
+
+                    return `
+                        <div class="flex items-center justify-between gap-3 py-2.5 px-3 rounded-lg border transition-all ${
+                            qty > 0
+                                ? 'bg-graphite/90 border-pearl/60'
+                                : 'bg-obsidian/40 border-silver/15 hover:border-silver/40'
+                        }">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-silver/60 text-xs">—</span>
+                                    <span class="font-cormorant text-lg sm:text-xl text-pearl font-medium leading-tight">
+                                        ${item.name}
+                                    </span>
+                                </div>
+                                ${item.note ? `<p class="font-cormorant italic text-xs sm:text-sm text-pewter pl-4 mt-0.5">${item.note}</p>` : ''}
+                            </div>
+
+                            <div class="flex items-center gap-3 shrink-0">
+                                ${!item.isStartingPrice ? `
+                                    <span class="font-cormorant italic text-lg sm:text-xl font-semibold text-pearl">
+                                        ${formatBRL(item.price)}
+                                    </span>
+                                ` : ''}
+
+                                ${qty === 0 ? `
+                                    <button onclick="addToCart('${item.id}')" class="px-3 py-1.5 rounded-lg bg-graphite hover:bg-pearl text-pearl hover:text-obsidian border border-silver/40 text-xs font-medium transition-all flex items-center gap-1.5">
+                                        <i class="fa-solid fa-plus text-[10px]"></i>
+                                        <span>Adicionar</span>
+                                    </button>
+                                ` : `
+                                    <div class="flex items-center gap-1.5 bg-obsidian border border-pearl/50 rounded-lg px-1.5 py-1">
+                                        <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 rounded flex items-center justify-center text-silver hover:text-pearl hover:bg-graphite text-xs">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <span class="text-xs font-semibold text-pearl px-1.5">${qty}</span>
+                                        <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 rounded flex items-center justify-center text-silver hover:text-pearl hover:bg-graphite text-xs">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                groupWrapper.innerHTML = headerHTML + `<div class="space-y-2">${itemsHTML}</div>`;
+                container.appendChild(groupWrapper);
+            });
+        }
+
+        // =========================================================================
+        // 6. SIMULADOR DE PEDIDO / MONTADOR DE CONSULTA
+        // =========================================================================
+        function findCatalogItem(id) {
+            for (const g of OFFICIAL_CATALOG) {
+                const found = g.items.find(i => i.id === id);
+                if (found) return found;
+            }
+            return null;
+        }
+
+        function addToCart(id) {
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ id, quantity: 1 });
+            }
+            renderCatalog();
+            updateOrderSummary();
+        }
+
+        function changeQty(id, delta) {
+            const idx = cart.findIndex(c => c.id === id);
+            if (idx === -1) return;
+            cart[idx].quantity += delta;
+            if (cart[idx].quantity <= 0) {
+                cart.splice(idx, 1);
+            }
+            renderCatalog();
+            updateOrderSummary();
+        }
+
+        function clearCart() {
+            cart = [];
+            document.getElementById('client-questions').value = '';
+            renderCatalog();
+            updateOrderSummary();
+        }
+
+        function updateOrderSummary() {
+            const listEl = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total-display');
+            const customNoteEl = document.getElementById('custom-quote-note');
+            const previewEl = document.getElementById('message-preview-box');
+
+            const clientName = document.getElementById('client-name').value.trim();
+            const clientQuestions = document.getElementById('client-questions').value.trim();
+
+            if (cart.length === 0) {
+                listEl.innerHTML = `<p class="text-sm text-pewter italic py-4 text-center">Clique em "+ Adicionar" nos serviços ao lado para montar seu pedido.</p>`;
+                totalEl.textContent = 'R$ 0,00';
+                customNoteEl.classList.add('hidden');
+            } else {
+                let total = 0;
+                let hasCustom = false;
+
+                listEl.innerHTML = cart.map(entry => {
+                    const item = findCatalogItem(entry.id);
+                    if (!item) return '';
+                    const subtotal = item.price * entry.quantity;
+                    total += subtotal;
+                    if (item.isStartingPrice) hasCustom = true;
+
+                    return `
+                        <div class="flex items-center justify-between gap-2 bg-obsidian px-3 py-2 rounded-lg border border-silver/20 text-xs">
+                            <div class="min-w-0 pr-1">
+                                <span class="text-pearl font-medium block truncate">${entry.quantity}x ${item.name}</span>
+                                <span class="text-pewter text-[10px]">${item.categoryLabel}</span>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <span class="text-pearl font-semibold">${item.isStartingPrice ? 'A partir de ' : ''}${formatBRL(subtotal)}</span>
+                                <button onclick="changeQty('${item.id}', -${entry.quantity})" class="text-pewter hover:text-pearl" title="Remover">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                totalEl.textContent = `${hasCustom ? 'A partir de ' : ''}${formatBRL(total)}`;
+                if (hasCustom) {
+                    customNoteEl.classList.remove('hidden');
+                } else {
+                    customNoteEl.classList.add('hidden');
+                }
+            }
+
+            // Monta mensagem organizada para WhatsApp / Discord
+            let msg = `Olá! Gostaria de agendar um atendimento com *${profile.brandName}*.\n`;
+            if (clientName) {
+                msg += `• *Nome:* ${clientName}\n`;
+            }
+
+            if (cart.length > 0) {
+                msg += `\n*Serviços selecionados:*\n`;
+                let sum = 0;
+                let hasStarting = false;
+                cart.forEach(entry => {
+                    const item = findCatalogItem(entry.id);
+                    if (!item) return;
+                    const sub = item.price * entry.quantity;
+                    sum += sub;
+                    if (item.isStartingPrice) hasStarting = true;
+                    msg += `- ${entry.quantity}x ${item.categoryLabel}: ${item.name} (${item.isStartingPrice ? 'a partir de ' : ''}${formatBRL(sub)})\n`;
+                });
+                msg += `\n*Total estimado:* ${hasStarting ? 'A partir de ' : ''}${formatBRL(sum)}\n`;
+            } else {
+                msg += `\nGostaria de consultar os horários disponíveis para atendimento.\n`;
+            }
+
+            if (clientQuestions) {
+                msg += `\n*Perguntas / Tema:* ${clientQuestions}\n`;
+            }
+
+            msg += `\nEstou ciente do aviso de que não são realizadas tiragens sobre saúde, questões jurídicas ou pessoas falecidas.`;
+            msg += `\nContato: Discord ${profile.discord} | Instagram @${profile.instagram.replace(/^@/, '')}`;
+            previewEl.textContent = msg;
+        }
+
+        function sendOrderWhatsApp() {
+            const text = document.getElementById('message-preview-box').textContent;
+            const cleanWa = profile.whatsapp.replace(/\D/g, '');
+            const url = `https://wa.me/${cleanWa}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function copyOrderDiscord() {
+            const text = document.getElementById('message-preview-box').textContent;
+            copyTextSafe(text, `Mensagem copiada! Cole na DM de ${profile.discord} no Discord.`);
+        }
+
+        function copyTextSafe(text, toastMsg) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast(toastMsg);
+            } catch (e) {
+                showToast('Não foi possível copiar automaticamente.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = msg;
+            el.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                el.classList.add('translate-y-24', 'opacity-0');
+            }, 3400);
+        }
+
+        // =========================================================================
+        // 7. CARTA DO DIA INTERATIVA EM 3D (MONOCROMÁTICA)
+        // =========================================================================
+        function shuffleDailyDeck(animate = true) {
+            cardRevealed = false;
+            document.getElementById('daily-card-result').classList.add('hidden');
+
+            const shuffled = [...DAILY_CARDS].sort(() => Math.random() - 0.5);
+            currentHand = shuffled.slice(0, 3);
+
+            const row = document.getElementById('daily-cards-row');
+            row.innerHTML = '';
+
+            currentHand.forEach((card, idx) => {
+                const slot = document.createElement('div');
+                slot.className = `perspective-1000 h-72 sm:h-80 cursor-pointer group ${animate ? 'shuffling' : ''}`;
+                slot.onclick = () => flipDailyCard(idx, slot);
+
+                slot.innerHTML = `
+                    <div class="card-inner shadow-2xl rounded-xl">
+                        <!-- VERSO DA LÂMINA -->
+                        <div class="card-face card-back card-pattern p-4 flex flex-col items-center justify-between transition-transform duration-300 group-hover:-translate-y-2">
+                            <div class="w-full flex justify-between text-silver/50 text-xs">
+                                <span>✦</span><span>✦</span>
+                            </div>
+                            <div class="w-24 h-24 rounded-full border border-silver/40 bg-obsidian/80 flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-full border border-dashed border-silver/55 flex items-center justify-center text-pearl">
+                                    <i class="fa-solid fa-eye text-xl"></i>
+                                </div>
+                            </div>
+                            <span class="font-cormorant italic text-sm tracking-wider text-pearl bg-obsidian/85 px-3.5 py-1 rounded-full border border-silver/30">
+                                Toque para revelar
+                            </span>
+                            <div class="w-full flex justify-between text-silver/50 text-xs">
+                                <span>✦</span><span>✦</span>
+                            </div>
+                        </div>
+
+                        <!-- FRENTE DA LÂMINA -->
+                        <div class="card-face card-front p-5 flex flex-col items-center justify-between text-center">
+                            <span class="text-[10px] uppercase tracking-[0.18em] text-pewter border-b border-silver/20 pb-1.5 w-full">
+                                ${card.deck}
+                            </span>
+                            <div class="my-auto py-2">
+                                ${card.svg}
+                                <h4 class="font-playfair italic text-2xl font-semibold text-pearl mt-3">${card.name}</h4>
+                                <p class="text-[11px] text-pewter mt-1">${card.keywords}</p>
+                            </div>
+                            <span class="text-[11px] text-silver">Lâmina Escolhida ✦</span>
+                        </div>
+                    </div>
+                `;
+
+                row.appendChild(slot);
+            });
+
+            if (animate) {
+                setTimeout(() => {
+                    document.querySelectorAll('#daily-cards-row > div').forEach(el => el.classList.remove('shuffling'));
+                }, 580);
+            }
+        }
+
+        function flipDailyCard(index, element) {
+            if (cardRevealed) {
+                showToast('Você já revelou uma carta. Clique em "Embaralhar Lâminas" para tirar outra.');
+                return;
+            }
+            cardRevealed = true;
+            element.classList.add('card-flipped');
+
+            document.querySelectorAll('#daily-cards-row > div').forEach((el, idx) => {
+                if (idx !== index) {
+                    el.classList.add('opacity-45', 'scale-95', 'transition-all', 'duration-500');
+                }
+            });
+
+            const chosen = currentHand[index];
+            setTimeout(() => {
+                document.getElementById('result-deck-label').textContent = chosen.deck;
+                document.getElementById('result-card-name').textContent = chosen.name;
+                document.getElementById('result-card-keywords').textContent = chosen.keywords;
+                document.getElementById('result-card-message').textContent = `"${chosen.message}"`;
+
+                const box = document.getElementById('daily-card-result');
+                box.classList.remove('hidden');
+                box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 420);
+        }
+
+        // =========================================================================
+        // 8. MODAL DE CONFIGURAÇÃO DE CONTATO / NOME ARTÍSTICO
+        // =========================================================================
+        function toggleSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            const isHidden = modal.classList.contains('hidden');
+
+            if (isHidden) {
+                document.getElementById('input-brand-name').value = profile.brandName;
+                document.getElementById('input-whatsapp').value = profile.whatsapp;
+                document.getElementById('input-discord').value = profile.discord;
+                document.getElementById('input-instagram').value = profile.instagram;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function saveSettings() {
+            profile.brandName = document.getElementById('input-brand-name').value.trim() || DEFAULT_PROFILE.brandName;
+            profile.whatsapp = document.getElementById('input-whatsapp').value.trim() || DEFAULT_PROFILE.whatsapp;
+            profile.discord = document.getElementById('input-discord').value.trim() || DEFAULT_PROFILE.discord;
+            profile.instagram = document.getElementById('input-instagram').value.trim() || DEFAULT_PROFILE.instagram;
+
+            localStorage.setItem('cartomancia_gothic_profile', JSON.stringify(profile));
+            applyProfileUI();
+            updateOrderSummary();
+            toggleSettingsModal();
+            showToast('Dados de contato atualizados!');
+        }
+
+        function resetSettings() {
+            localStorage.removeItem('cartomancia_gothic_profile');
+            profile = { ...DEFAULT_PROFILE };
+            applyProfileUI();
+            updateOrderSummary();
+            toggleSettingsModal();
+            showToast('Dados restaurados para o padrão.');
+        }
+
+        // =========================================================================
+        // 9. PARTÍCULAS PRATEADAS SUTIS NO FUNDO
+        // =========================================================================
+        function initSilverParticles() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let width, height, dots;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                const count = Math.min(Math.floor((width * height) / 20000), 65);
+                dots = Array.from({ length: count }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 1.3 + 0.3,
+                    a: Math.random() * 0.45 + 0.08,
+                    da: (Math.random() * 0.006 + 0.002) * (Math.random() < 0.5 ? 1 : -1),
+                    vy: -(Math.random() * 0.14 + 0.03)
+                }));
+            }
+
+            function loop() {
+                ctx.clearRect(0, 0, width, height);
+                dots.forEach(p => {
+                    p.y += p.vy;
+                    if (p.y < 0) p.y = height;
+                    p.a += p.da;
+                    if (p.a <= 0.08 || p.a >= 0.55) p.da *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(216, 214, 208, ${p.a})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(loop);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            loop();
+        }
+    </script>
+</body>
+</html>
